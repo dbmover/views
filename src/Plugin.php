@@ -28,7 +28,7 @@ class Plugin extends Core\Plugin
                 FROM INFORMATION_SCHEMA.TABLES
                 WHERE (TABLE_CATALOG = ? OR TABLE_SCHEMA = ?) AND TABLE_TYPE = 'VIEW'"
         );
-        $stmt->execute([$this->loader->database, $this->loader->database]);
+        $stmt->execute([$this->loader->getDatabase(), $this->loader->getDatabase()]);
         while (false !== ($view = $stmt->fetchColumn())) {
             if (!$this->loader->shouldBeIgnored($view)) {
                 $this->loader->addOperation("DROP VIEW IF EXISTS $view;");
