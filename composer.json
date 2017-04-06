@@ -1,0 +1,13 @@
+{
+    "name": "dbmover/views",
+    "description": "Dbmover plugin to (re)create all views",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marijn Ophorst",
+            "email": "marijn@monomelodies.nl"
+        }
+    ],
+    "require": {}
+}
