@@ -31,7 +31,7 @@ class Plugin extends Core\Plugin
         $stmt->execute([$this->loader->database, $this->loader->database]);
         while (false !== ($view = $stmt->fetchColumn())) {
             if (!$this->loader->shouldBeIgnored($view)) {
-                $this->addOperation("DROP VIEW IF EXISTS $view;");
+                $this->loader->addOperation("DROP VIEW IF EXISTS $view;");
             }
         }
         return $sql;
@@ -40,7 +40,7 @@ class Plugin extends Core\Plugin
     public function __destruct()
     {
         foreach ($this->views as $view) {
-            $this->addOperation($view);
+            $this->loader->addOperation($view);
         }
     }
 }
