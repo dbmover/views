@@ -14,6 +14,7 @@ use Dbmover\Core;
 class Plugin extends Core\Plugin
 {
     private $views = [];
+    public $description = 'Dropping existing views...';
 
     public function __invoke(string $sql) : string
     {
@@ -32,10 +33,16 @@ class Plugin extends Core\Plugin
         $stmt->execute([$this->loader->getDatabase(), $this->loader->getDatabase()]);
         while (false !== ($view = $stmt->fetchColumn())) {
             if (!$this->loader->shouldBeIgnored($view)) {
-                $this->loader->addOperation("DROP VIEW $view;");
+                $this->addOperation("DROP VIEW $view;");
             }
         }
         return $sql;
+    }
+
+    public function __destruct()
+    {
+        $this->description = 'Creating views...';
+        parent::__destruct();
     }
 }
 
