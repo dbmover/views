@@ -16,7 +16,7 @@ use Dbmover\Core;
  */
 class Plugin extends Core\Plugin
 {
-    private $views = [];
+    /** @var string */
     public $description = 'Dropping existing views...';
 
     /**
@@ -25,7 +25,7 @@ class Plugin extends Core\Plugin
      */
     public function __invoke(string $sql) : string
     {
-        if (preg_match_all('@^CREATE(\s+MATERIALIZED)?\s+VIEW.*?;$@ms', $sql, $views, PREG_SET_ORDER)) {
+        if (preg_match_all('@^CREATE\s+VIEW.*?;$@ms', $sql, $views, PREG_SET_ORDER)) {
             foreach ($views as $view) {
                 $sql = str_replace($view[0], '', $sql);
                 $this->defer($view[0]);
@@ -40,7 +40,7 @@ class Plugin extends Core\Plugin
         $stmt->execute([$this->loader->getDatabase(), $this->loader->getDatabase()]);
         while (false !== ($view = $stmt->fetchColumn())) {
             if (!$this->loader->shouldBeIgnored($view)) {
-                $this->addOperation("DROP VIEW IF EXISTS $view;");
+                $this->addOperation("DROP VIEW $view;");
             }
         }
         return $sql;
