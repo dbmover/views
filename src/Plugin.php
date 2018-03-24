@@ -11,14 +11,21 @@ namespace Dbmover\Views;
 
 use Dbmover\Core;
 
+/**
+ * Plugin to (re)create all views.
+ */
 class Plugin extends Core\Plugin
 {
-    private $views = [];
+    /** @var string */
     public $description = 'Dropping existing views...';
 
+    /**
+     * @param string $sql
+     * @return string
+     */
     public function __invoke(string $sql) : string
     {
-        if (preg_match_all('@^CREATE(\s+MATERIALIZED)?\s+VIEW.*?;$@ms', $sql, $views, PREG_SET_ORDER)) {
+        if (preg_match_all('@^CREATE\s+VIEW.*?;$@ms', $sql, $views, PREG_SET_ORDER)) {
             foreach ($views as $view) {
                 $sql = str_replace($view[0], '', $sql);
                 $this->defer($view[0]);
@@ -39,6 +46,9 @@ class Plugin extends Core\Plugin
         return $sql;
     }
 
+    /**
+     * @return void
+     */
     public function __destruct()
     {
         $this->description = 'Creating views...';
