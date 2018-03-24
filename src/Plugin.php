@@ -40,7 +40,7 @@ class Plugin extends Core\Plugin
         $stmt->execute([$this->loader->getDatabase(), $this->loader->getDatabase()]);
         while (false !== ($view = $stmt->fetchColumn())) {
             if (!$this->loader->shouldBeIgnored($view)) {
-                $this->addOperation("DROP VIEW $view;");
+                $this->addOperation("DROP VIEW IF EXISTS $view;");
             }
         }
         return $sql;
